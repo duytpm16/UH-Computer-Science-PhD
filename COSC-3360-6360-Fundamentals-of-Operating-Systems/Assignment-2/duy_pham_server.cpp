@@ -74,6 +74,7 @@ int main(int argc, char* argv[])
 	int s, t;
 	int portNumber;
 	std::string inputFile;
+	std::unordered_map<std::string, std::string> data;
 
 
 	// Read in text file.
@@ -83,7 +84,6 @@ int main(int argc, char* argv[])
 
 	file.open(inputFile);
 	string line;
-	std::unordered_map<std::string, std::string> data;
 	while(!file.eof())
 	{
 		getline(file, line);
@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
 	}
 
 
-	// Prompt for the port number and reject if the port number between 2000-65535 according to https://www.linuxhowtos.org/C_C++/socket.htm
+	// Prompt for the port number and reject if the port number is between 2000-65535 according to https://www.linuxhowtos.org/C_C++/socket.htm
 	cout << "Enter the server port number: ";
 	cin  >> portNumber;
 	while (portNumber < 2000 || portNumber > 65535)

@@ -1,0 +1,4 @@
+Ann  0  1  11  1
+Bernardo  2  1  7  1
+Chandra  2  1  2  1
+Dean  2  1  5  1

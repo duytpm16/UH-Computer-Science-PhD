@@ -128,20 +128,24 @@ int main(int argc, char* argv[])
 	
 	
 	// Output results based on the test result.
-	if (buf[0] == 'X')
+	switch(buf[0])
 	{
-		cout << "The test result you requested is not in our database" << endl << endl;
-	}
-	else
-	{
-		if (buf[0] == 'N')
-		{
+		case 'N':
 			cout << "Your test result was NEGATIVE." << endl << endl;
-		}
-		if (buf[0] == 'P')
-		{
+			break;
+
+		case 'P':
 			cout << "Your test result was POSITIVE." << endl << endl;
-		}
+			break;
+		
+		case 'X':
+			cout << "The test result you requested is not in our database." << endl << endl;
+			break;
+
+		default:
+			cout << "Invalid test result." << endl << endl;
+			break;
+
 	}
 
 	close(b);
