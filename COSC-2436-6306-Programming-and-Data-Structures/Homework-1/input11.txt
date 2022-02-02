@@ -1,0 +1,3 @@
+{name:Jone.       Rock,age:25,dept:CS},{na       me:Alice.Sun,age:46,dept:CS},
+{name:Asen.Huan,age:30,dept:EE},{name:Bob.Carlos,ag
+e:20,dept:EE}, {name:Am    aya.Jeremy,age:24,dept:ISS   SO},{name:Kim.Jose,age:34,dept:Edu}

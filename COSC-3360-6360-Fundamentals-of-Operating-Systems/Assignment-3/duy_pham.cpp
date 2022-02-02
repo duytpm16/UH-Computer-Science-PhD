@@ -38,10 +38,8 @@ struct visit
 	int climbDownTime = 0;
 };
 
-bool climbUpLadder(string nickName, int climbUpTime)
+void climbUpLadder(string nickName, int climbUpTime)
 {
-	bool hadToWait = false;
-
 	// Visitor has to wait until nVisitorOnPlatform < 3 and nLadder != 1. Otherwise climb the ladder onto the platform
 	pthread_mutex_lock(&mylock);
 		int i = 0;
@@ -76,8 +74,6 @@ bool climbUpLadder(string nickName, int climbUpTime)
 		nVisitorsOnPlatform++;
 	pthread_cond_signal(&ok);
 	pthread_mutex_unlock(&mylock);
-
-	return hadToWait;
 }
 
 void climbDownLadder(string nickName, int climbDownTime)
@@ -109,7 +105,7 @@ void climbDownLadder(string nickName, int climbDownTime)
 
 void *visitor(void *arg)
 {
-	struct visit vData= *((visit*)arg);
+	struct visit vData = *((visit*)arg);
 
 	// Climb up ladder
 	cout << vData.nickName << " arrives at the platform." << endl;
@@ -126,8 +122,6 @@ void *visitor(void *arg)
 	pthread_exit((void*) 0);
 }
 
-
-
 int main(int argc, char* argv[])
 {
 	// Prompt for file name
@@ -135,7 +129,6 @@ int main(int argc, char* argv[])
 	cout << "Enter the file name: ";
 	cin  >> fileName;
 	cout << endl;
-
 
 	// Read input file
 	std::ifstream file;
@@ -145,15 +138,11 @@ int main(int argc, char* argv[])
 		cerr << "\nERROR: Cannot open the file: " << fileName << "\n\n";
 		exit(1);
 	}
-
-	// Initialize pthread mutex
-	pthread_mutex_init(&mylock, NULL);
 	
 	// Read in data from file and store values to visit struct. Save each struct to vector
 	std::string line;
 	std::vector<pthread_t> children;
 	std::vector<struct visit> visitVector;
-	int index = 0;
 	while (getline(file, line))
 	{
 		struct visit cData;
@@ -167,8 +156,11 @@ int main(int argc, char* argv[])
 		iss >> cData.climbDownTime;
 
 		visitVector.push_back(cData);
-		index++;
 	}
+	
+	
+	// Initialize pthread mutex
+	pthread_mutex_init(&mylock, NULL);
 
 	// Start thread for each visitor and store then into children vector
 	for (size_t i = 0; i < visitVector.size(); i++)
@@ -185,6 +177,7 @@ int main(int argc, char* argv[])
 	{
 		pthread_join(children[n], NULL);
 	}
+
 
 	// Print number of visitors and number of vistors that had to wait.
 	cout << "\n" << nVisitors << " visitor(s) came on the platform." << endl; 
