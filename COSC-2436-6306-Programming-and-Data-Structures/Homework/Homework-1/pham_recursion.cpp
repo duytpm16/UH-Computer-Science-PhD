@@ -15,7 +15,7 @@ Description: Recursion program using the input file and command file. Results ar
 bool match_command(std::string command, std::string info);
 bool read_inputFile(std::string inputFile, std::vector<std::string>& vec);
 bool read_commandFile(std::string commandFile, std::string& command);
-std::string recursion_func(int level, std::string command, std::vector<std::string> vec);
+std::string recursion_func(int start, int end, int level, std::string command, std::vector<std::string> vec);
 
 int main(int argc, char* argv[]) {
   
@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
   }
 
   // Recursion
-  std::string results = recursion_func(0, command, input);
+  std::string results = recursion_func(0, input.size(), 0, command, input);
 
   // Write to output file
   std::ofstream ofs(outputFile);
@@ -197,36 +197,25 @@ bool match_command(std::string command, std::string info)
 
 
 // Recursive function
-std::string recursion_func(int level, std::string command, std::vector<std::string> vec)
+std::string recursion_func(int start, int end, int level, std::string command, std::vector<std::string> vec)
 {
   std::string test = "";
-  size_t vs = vec.size();
-  if (vs == 1)
+  if ((start - (end-1)) == 0)
   {
     // Return level and information if matches command
-    if (match_command(command, vec[0])) {
-      return ("Level " + std::to_string(level) + ": " + vec[0] + "\n");
+    if (match_command(command, vec[start])) {
+      return ("Level " + std::to_string(level) + ": " + vec[start] + "\n");
     }
     else {
       return "";
     }
   } else {
     // Recursion: split the vector in half 
-    size_t mid = ceil(vs / 2.0);
-    std::vector<std::string> first_half;
-    std::vector<std::string> second_half; 
-    for (size_t i = 0; i < mid; i++)
-    {
-      first_half.push_back(vec[i]);
-    }   
-    for (size_t i = mid; i < vs; i++)
-    {
-      second_half.push_back(vec[i]);
-    }
+    size_t mid = ceil((start + end) / 2.0);
 
     level++;
-    test += recursion_func(level, command, first_half) + 
-            recursion_func(level, command, second_half);
+    test += recursion_func(start, mid, level, command, vec) + 
+            recursion_func(mid, end, level, command, vec);
   }
 
   return test;
