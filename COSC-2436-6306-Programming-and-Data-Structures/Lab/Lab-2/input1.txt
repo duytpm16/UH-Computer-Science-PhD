@@ -1,0 +1,5 @@
+string
+Add (0) [hello]
+Add (1) [world]
+Add (0) [print]
+Remove [tomorrow]

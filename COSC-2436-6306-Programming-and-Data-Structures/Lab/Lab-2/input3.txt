@@ -1,0 +1,9 @@
+int
+Add (1) [9]
+Add (0) [3]
+Add (1) [7]
+Add (2) [11]
+Add (4) [5]
+Remove [7]
+Remove [3]
+Add (1) [32]
