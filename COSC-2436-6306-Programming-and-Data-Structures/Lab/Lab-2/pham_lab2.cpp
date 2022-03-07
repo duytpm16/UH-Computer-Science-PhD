@@ -61,6 +61,7 @@ int main(int argc, char* argv[]) {
     std::istringstream iss(line);
     if (i == 0) {
         iss >> type;
+        std::transform(type.begin(), type.end(), type.begin(), [](unsigned char c) { return std::tolower(c); });
 
         if (type != "char" && type != "string" && type != "int") {
             cout << "Error: the first line in input file is not char, string, or int" << endl;
@@ -96,7 +97,8 @@ int main(int argc, char* argv[]) {
             continue;
           }
         } 
-        else {
+        
+        if (command == "remove") {
           iss >> value;
           value.erase(0,1);
           value.pop_back();
