@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <queue>
 #include <string>
 #include <vector>
 
@@ -41,7 +42,7 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  // Read Input file
+  // Read Input file and sort by time
   std::string line = "";
   std::ifstream ifs(inputFile);
   if (!ifs.is_open()) {
@@ -50,8 +51,8 @@ int main(int argc, char* argv[]) {
   }
 
   int i = 0;
-  std::vector<double> dbl_queue;
-  std::vector<std::string> str_queue;
+  std::vector<double> dbl_time;
+  std::vector<std::string> str_task;
   while(getline(ifs, line)) 
   {
     line.erase(std::remove(line.begin(), line.end(), '\r'), line.end());
@@ -77,45 +78,52 @@ int main(int argc, char* argv[]) {
     }
 
     if (i == 0) {
-      dbl_queue.push_back(time);
-      str_queue.push_back(task);
+      dbl_time.push_back(time);
+      str_task.push_back(task);
       i++;
     }
     else {
-      if (time < dbl_queue[0]) {
-        dbl_queue.insert(dbl_queue.begin(), time);
-        str_queue.insert(str_queue.begin(), task);
+      if (time < dbl_time[0]) {
+        dbl_time.insert(dbl_time.begin(), time);
+        str_task.insert(str_task.begin(), task);
         i++;
       }
-      else if (time > dbl_queue[i - 1]) {
-        dbl_queue.push_back(time);
-        str_queue.push_back(task);
+      else if (time > dbl_time[i - 1]) {
+        dbl_time.push_back(time);
+        str_task.push_back(task);
         i++;
       } else {
         bool inserted = false;
         for (int j = 0; j < i; j++) {
-          if (time < dbl_queue[j]) {
-            dbl_queue.insert(dbl_queue.begin() + j, time);
-            str_queue.insert(str_queue.begin() + j, task);
+          if (time < dbl_time[j]) {
+            dbl_time.insert(dbl_time.begin() + j, time);
+            str_task.insert(str_task.begin() + j, task);
             inserted = true;
             break;
           }
         }
 
         if (!inserted) {
-          dbl_queue.push_back(time);
-          str_queue.push_back(task);      
+          dbl_time.push_back(time);
+          str_task.push_back(task);      
         }
         i++;
       }
     }
   }
 
-
-  // Write to output file
-  std::ofstream ofs(outputFile);
+  // Using queue
+  std::queue<std::string> str_queue;
   for (int j = 0; j < i; j++) {
-    ofs << str_queue[j] + "\n";
+    str_queue.push(str_task[j]);
+  }
+
+  // Write to output file and remove element from queue
+  std::ofstream ofs(outputFile);
+  while (str_queue.empty() == false){
+    ofs << str_queue.front() + "\n";
+    str_queue.pop();
+    
   }
 
   return 0;
